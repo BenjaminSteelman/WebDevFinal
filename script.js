@@ -37,31 +37,22 @@ var invalidBool;
 
 var tableCount = 0;
 
-const { createClient } = require('@supabase/supabase-js');
+/*const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = 'https://xcoelbuelwoyrirwptud.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhjb2VsYnVlbHdveXJpcndwdHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMDU5MzcsImV4cCI6MjA1OTg4MTkzN30.RGlbvdU4jcchXV-gJQtEuhMuNP6tVqpET7nwqm5DO4A';
 const supabase = createClient(supabaseUrl, supabaseKey);
-  
+  */
 
 async function getValue() {
-    const { data, error } = await supabase
-  .from('CourseList')
-  .select('courseList')
-  .eq('id', 1)
-  .single();
+   try {
+     const response = await fetch("/.netlify/functions/get-list.js");
+     let list = await response.json();
 
-    if (error) {
-        console.error("Error fetching data:", error);
-        } 
-    else if (data) {
-        console.log("Fetched data:", data);
-        courseListText = data;
-
-        } 
-    else {
-        console.log("No data found with that ID.");
-        }
+     list.forEach(list => {
+       courseListText = CourseList.courseList;
+     }
+  } 
 }
 
 inputElement.addEventListener('keydown', function(event){
