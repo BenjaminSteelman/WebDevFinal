@@ -1,0 +1,40 @@
+html {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+}
+
+#input {
+  color: white;
+  text-decoration-color: white;
+  background-color: #000;
+  border: none;
+  outline: none;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  padding-bottom: 0px;
+}
+
+#teacherInput {
+  color: white;
+  text-decoration-color: white;
+  background-color: #000;
+  border: none;
+  outline: none;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#input::placeholder {
+  color: white;
+  font-size: 12px;
+}
+
+
+body {
+  color: white;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0; 
+  margin: 0; 
+}
