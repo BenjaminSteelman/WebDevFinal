@@ -1,7 +1,6 @@
 var DATABASE_URL = 'https://xcoelbuelwoyrirwptud.supabase.co';
 var SUPABASE_SERVICE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhjb2VsYnVlbHdveXJpcndwdHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMDU5MzcsImV4cCI6MjA1OTg4MTkzN30.RGlbvdU4jcchXV-gJQtEuhMuNP6tVqpET7nwqm5DO4A';
 
-
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.DATABASE_URL, process.env.SUPABASE_SERVICE_API_KEY);
 
