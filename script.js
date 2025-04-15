@@ -51,7 +51,7 @@ async function getValue() {
 
      list.forEach(list => {
        courseListText = CourseList.courseList;
-     }
+     });
   } 
 }
 
