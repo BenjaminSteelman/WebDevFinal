@@ -1,5 +1,3 @@
-
-
 const inputElement = document.createElement('input');
 const teacherElement = document.createElement('input');
 const enterKey = document.getElementById('enterInput')
@@ -39,9 +37,12 @@ var invalidBool;
 
 var tableCount = 0;
 
-//const { createClient } = require('@supabase/supabase-js');
+const { createClient } = require('@supabase/supabase-js');
 
-const supabase = window.supabase;
+const supabaseUrl = 'https://xcoelbuelwoyrirwptud.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhjb2VsYnVlbHdveXJpcndwdHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMDU5MzcsImV4cCI6MjA1OTg4MTkzN30.RGlbvdU4jcchXV-gJQtEuhMuNP6tVqpET7nwqm5DO4A';
+const supabase = createClient(supabaseUrl, supabaseKey);
+  
 
 async function getValue() {
     const { data, error } = await supabase
