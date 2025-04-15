@@ -52,7 +52,9 @@ async function getValue() {
      list.forEach(list => {
        courseListText = CourseList.courseList;
      });
-  } 
+  } catch (error) {
+    console.error(error);
+   }
 }
 
 inputElement.addEventListener('keydown', function(event){
