@@ -46,7 +46,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getValue() {
    try {
-     const response = await fetch("/.netlify/functions/get-list.js");
+     const response = await fetch("/.netlify/functions/get-list");
      let list = await response.json();
 
      list.forEach(list => {
