@@ -5,7 +5,7 @@ var SUPABASE_SERVICE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.DATABASE_URL, process.env.SUPABASE_SERVICE_API_KEY);
 
-exports.handler = async function(event, context) => {
+exports.handler = async function(event, context) {
   try {
     const { data, error } = await supabase
       .from('CourseList');
