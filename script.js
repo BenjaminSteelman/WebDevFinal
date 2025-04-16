@@ -57,6 +57,7 @@ async function getValue() {
     console.error(error);
    }
   return courseListText
+  console.log(courseListText)
 }
 
 courseListText = getValue()
@@ -177,7 +178,7 @@ async function createCourseListTable(courseListText) {
         courseListText = await getValue()
     }
     
-    const table = document.createElement('table');
+    /*const table = document.createElement('table');
     table.id = tableCount;
     var rowInsert = table.insertRow();
     var cellInsert = rowInsert.insertCell();
@@ -197,5 +198,5 @@ async function createCourseListTable(courseListText) {
 
     table.style.paddingTop = '0px';
     document.body.append(table);
-    tableCount = tableCount + 1;
+    tableCount = tableCount + 1;*/
 }
