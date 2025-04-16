@@ -52,12 +52,14 @@ async function getValue() {
      list.forEach(list => {
        courseListText = CourseList.courseList;
      });
+    
   } catch (error) {
     console.error(error);
    }
+  return courseListText
 }
 
-getValue()
+courseListText = getValue()
 
 inputElement.addEventListener('keydown', function(event){
     console.log(event.key);
@@ -92,7 +94,6 @@ inputElement.addEventListener('keydown', function(event){
                 inputVal = "Welcome Student";
                 studentBool = true;
                 teacherBool = false;
-                getValue()
                 createCourseListTable(courseListText);
             }
         if (inputVal == "teacher" && isBool === true) {
@@ -105,7 +106,6 @@ inputElement.addEventListener('keydown', function(event){
                 document.body.appendChild(inputElement);
                 teacherBool = true;
                 studentBool = false;
-                getValue();
                 createCourseListTable(courseListText);
             }
 
@@ -173,6 +173,10 @@ function checkIsCommand(inputVal) {
 }
 
 function createCourseListTable(courseListText) {
+    if (courseListText === undefined) {
+        courseListText = await getValue()
+    }
+    
     const table = document.createElement('table');
     table.id = tableCount;
     var rowInsert = table.insertRow();
