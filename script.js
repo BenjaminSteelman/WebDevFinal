@@ -57,6 +57,8 @@ async function getValue() {
    }
 }
 
+getValue()
+
 inputElement.addEventListener('keydown', function(event){
     console.log(event.key);
     if (event.key === 'Enter') {
