@@ -175,7 +175,8 @@ function createCourseListTable(courseListText) {
     table.id = tableCount;
     var rowInsert = table.insertRow();
     var cellInsert = rowInsert.insertCell();
-    
+
+    console.log(courseListText)
     var splitList = courseListText.split(",")
     var splitLength = splitList.length;
     var listCount = 0;
