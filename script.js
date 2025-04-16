@@ -172,7 +172,7 @@ function checkIsCommand(inputVal) {
     return inputVal.startsWith("is");
 }
 
-function createCourseListTable(courseListText) {
+async function createCourseListTable(courseListText) {
     if (courseListText === undefined) {
         courseListText = await getValue()
     }
