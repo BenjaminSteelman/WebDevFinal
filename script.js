@@ -1,7 +1,15 @@
+
+
 const inputElement = document.createElement('input');
 const teacherElement = document.createElement('input');
 const enterKey = document.getElementById('enterInput')
 inputElement.type = 'text';
+if (!document.cookie) {
+    document.cookie = "text=course 1,course 2,course 3,course 4,course 5; expires=Thu, 18 Dec 2800 12:00:00 UTC"; }
+
+let count = 1;
+let ulCount = 1;
+let ulCountTwo = 1;
 
 var para = document.createElement('p');
 //courseListText = "course 1,course 2,course 3,course 4,course 5";
@@ -37,30 +45,42 @@ var invalidBool;
 
 var tableCount = 0;
 
-/*const { createClient } = require('@supabase/supabase-js');
+var allPreviousInnerHtml;
 
-const supabaseUrl = 'https://xcoelbuelwoyrirwptud.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhjb2VsYnVlbHdveXJpcndwdHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzMDU5MzcsImV4cCI6MjA1OTg4MTkzN30.RGlbvdU4jcchXV-gJQtEuhMuNP6tVqpET7nwqm5DO4A';
-const supabase = createClient(supabaseUrl, supabaseKey);
-  */
 
-async function getValue() {
-   try {
-     const response = await fetch("/.netlify/functions/get-list");
-     let list = await response.json();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://bsteelman2:pnjLI0ZI1Shqpvuu@webdevfinal.thfrnfc.mongodb.net/?retryWrites=true&w=majority&appName=WebDevFinal";
 
-     list.forEach(list => {
-       courseListText = CourseList.courseList;
-     });
-    
-  } catch (error) {
-    console.error(error);
-   }
-  return courseListText
-  console.log(courseListText)
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // database and collection code goes here
+    const db = client.db("sample_guides");
+    const coll = db.collection("planets");
+    // find code goes here
+    const cursor = coll.find();
+    // iterate code goes here
+    await cursor.forEach(console.log);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
 }
+run().catch(console.dir);
 
-courseListText = getValue()
 
 inputElement.addEventListener('keydown', function(event){
     console.log(event.key);
@@ -68,7 +88,10 @@ inputElement.addEventListener('keydown', function(event){
         let inputVal = document.getElementById("input").value;
         isBool = checkIsCommand(inputVal);
         putBool = checkPutCommand(inputVal);
+        printBool = checkPrintCommand(inputVal);
+        displayBool = checkDisplayCommand(inputVal);
         console.log(isBool)
+
 
         if (isBool) {
             inputVal = inputVal.replace("is ", "")
@@ -80,14 +103,29 @@ inputElement.addEventListener('keydown', function(event){
             invalidBool = false;
         }
 
-        if (putBool === false && isBool === false){
+        if (printBool) {
+            inputVal = inputVal.replace("print ",'');
+            invalidBool = false;
+            console.log(inputVal)
+            console.log(inputVal === "courselist")
+        }
+
+        if (displayBool){
+            inputVal = inputVal.replace("display",'');
+            invalidBool = false;
+            console.log(inputVal)
+        }
+        if (putBool === false && isBool === false && printBool === false && displayBool === false){
             invalidBool = true; 
         }
-        
+
+
+        console.log(inputVal)
         if (inputVal == "student" && isBool === true) {
+                ulCount = ulCount + 1;
                 document.body.removeChild(arrowLabel);
                 document.body.removeChild(inputElement);
-                previous =  document.createTextNode(">" + inputVal);
+                previous =  document.createTextNode(">is " + inputVal);
                 allPrevious.appendChild(previous);
                 document.body.appendChild(allPrevious);
                 console.log("five")
@@ -95,9 +133,12 @@ inputElement.addEventListener('keydown', function(event){
                 inputVal = "Welcome Student";
                 studentBool = true;
                 teacherBool = false;
-                createCourseListTable(courseListText);
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
             }
         if (inputVal == "teacher" && isBool === true) {
+                ulCount = ulCount + 1;
                 document.body.removeChild(arrowLabel);
                 document.body.removeChild(inputElement);
                 previous =  ">is " + inputVal;
@@ -107,10 +148,24 @@ inputElement.addEventListener('keydown', function(event){
                 document.body.appendChild(inputElement);
                 teacherBool = true;
                 studentBool = false;
-                createCourseListTable(courseListText);
             }
 
+        if (isBool === true && inputVal != "teacher" && inputVal != "student") {
+            ulCount = ulCount + 1;
+            console.log("yes")
+            document.body.removeChild(arrowLabel);
+            document.body.removeChild(inputElement);
+            previous =  "> is " + inputVal;
+            newList(previous);
+            previous =  "The syntax of the command is incorrect.";
+            newList(previous);
+            document.body.appendChild(arrowLabel);
+            inputElement.value = ""
+            document.body.appendChild(inputElement);
+        }
+
         if (teacherBool === true && putBool === true) {
+            ulCount = ulCount + 1;
             document.body.removeChild(arrowLabel);
             document.body.removeChild(inputElement);
             previous =  ">put " + inputVal;
@@ -118,13 +173,38 @@ inputElement.addEventListener('keydown', function(event){
             document.body.appendChild(arrowLabel);
             inputElement.value = ""
             document.body.appendChild(inputElement);
-            courseList = document.createTextNode(inputVal);
-            document.getElementById(`${tableCount - 1}`).remove();
-            console.log(`${tableCount - 1}`);
-            createCourseListTable(inputVal);
+            document.cookie = `text=${inputVal}; expires=Thu, 18 Dec 2800 12:00:00 UTC`;
+        }
+
+        if (displayBool) {
+            ulCount = ulCount + 1;
+            if (inputVal === '') {
+                document.body.removeChild(arrowLabel);
+                document.body.removeChild(inputElement);
+                previous =  ">display ";
+                newList(previous);
+                console.log(`${tableCount - 1}`);
+                document.body.appendChild(createCourseListTable(undefined));
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
+            }
+            else {
+                ulCount = ulCount + 1;
+                document.body.removeChild(arrowLabel);
+                document.body.removeChild(inputElement);
+                previous =  ">display " + inputVal;
+                newList(previous);
+                previous =  "The syntax of the command is incorrect.";
+                newList(previous);
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
+            }
         }
 
         if (invalidBool){
+            ulCount = ulCount + 1;
             document.body.removeChild(arrowLabel);
             document.body.removeChild(inputElement);
             previous =  ">" + inputVal;
@@ -134,14 +214,72 @@ inputElement.addEventListener('keydown', function(event){
             document.body.appendChild(arrowLabel);
             inputElement.value = ""
             document.body.appendChild(inputElement);
-            createCourseListTable(courseListText);
-
         }
+
+        if (printBool){
+            console.log(inputVal === "courselist")
+            if (inputVal === "courselist") {
+                console.log('here')
+                const divPage = document.createElement('div')
+                divPage.setAttribute("id", "wholePage")
+                document.body.appendChild(divPage)
+                divPage.appendChild(createCourseListTable(undefined))
+                window.print();
+                document.body.removeChild(divPage);
+                ulCount = ulCount + 1;
+                document.body.removeChild(arrowLabel);
+                document.body.removeChild(inputElement);
+                previous =  ">print " + inputVal;
+                newList(previous);
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
+            }
+            else if (inputVal == "page") {
+                window.print();
+                ulCount = ulCount + 1;
+                document.body.removeChild(arrowLabel);
+                document.body.removeChild(inputElement);
+                previous =  ">print " + inputVal;
+                newList(previous);
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
+            }
+            else {
+                ulCount = ulCount + 1;
+                document.body.removeChild(arrowLabel);
+                document.body.removeChild(inputElement);
+                previous =  ">print " + inputVal;
+                newList(previous);
+                previous =  "The syntax of the command is incorrect.";
+                newList(previous);
+                document.body.appendChild(arrowLabel);
+                inputElement.value = ""
+                document.body.appendChild(inputElement);
+            }
+        }
+
+        inputElement.scrollIntoView(false);
     } 
 
 })
 
 setInterval(visibleFunc, 1000)
+
+
+
+function printCourseList(htmlCourseList) {
+    const newWindow = window.open('', '_blank');
+    newWindow.document.open();
+    newWindow.document.write(htmlCourseList);
+    newWindow.document.close(); 
+    newWindow.onload = () => {
+      newWindow.focus(); 
+      newWindow.print();
+      newWindow.close(); 
+    };
+  }
 
 
 function visibleFunc() {
@@ -156,7 +294,11 @@ function visibleFunc() {
 }
 
 function newList(previous) {
-    let count = 1;
+    if (ulCount > ulCountTwo){
+        ulCountTwo = ulCountTwo + 1;
+        allPrevious = document.createElement('ul')
+        allPrevious.setAttribute("id", "Unordered" + ulCount)
+    }
     previousList = document.createElement('li')
     previousList.setAttribute("id", "Div" + count)
     previousList.textContent = previous;
@@ -173,17 +315,24 @@ function checkIsCommand(inputVal) {
     return inputVal.startsWith("is");
 }
 
-async function createCourseListTable(courseListText) {
-    if (courseListText === undefined) {
-        courseListText = await getValue()
+function checkPrintCommand(inputVal) {
+    return inputVal.startsWith("print");
+}
+
+function checkDisplayCommand(inputVal) {
+    return inputVal.startsWith("display");
+}
+
+function createCourseListTable(courseListText) {
+    if (courseListText === undefined){
+        courseListText = document.cookie;
     }
-    
-    /*const table = document.createElement('table');
+    const table = document.createElement('table');
     table.id = tableCount;
     var rowInsert = table.insertRow();
     var cellInsert = rowInsert.insertCell();
-
-    console.log(courseListText)
+    
+    courseListText = courseListText.replace("text=", "")
     var splitList = courseListText.split(",")
     var splitLength = splitList.length;
     var listCount = 0;
@@ -197,6 +346,6 @@ async function createCourseListTable(courseListText) {
     }
 
     table.style.paddingTop = '0px';
-    document.body.append(table);
-    tableCount = tableCount + 1;*/
+    tableCount = tableCount + 1;
+    return(table)
 }
