@@ -90,17 +90,13 @@ inputElement.addEventListener('keydown', function(event){
                 ulCount = ulCount + 1;
                 document.body.removeChild(arrowLabel);
                 document.body.removeChild(inputElement);
-                previous =  document.createTextNode(">is " + inputVal);
-                allPrevious.appendChild(previous);
-                document.body.appendChild(allPrevious);
-                console.log("five")
-                document.body.appendChild(para);
-                inputVal = "Welcome Student";
-                studentBool = true;
-                teacherBool = false;
+                previous =  ">is " + inputVal;
+                newList(previous);
                 document.body.appendChild(arrowLabel);
                 inputElement.value = ""
                 document.body.appendChild(inputElement);
+                teacherBool = false;
+                studentBool = true;
             }
         if (inputVal == "teacher" && isBool === true) {
                 ulCount = ulCount + 1;
@@ -117,10 +113,10 @@ inputElement.addEventListener('keydown', function(event){
 
         if (isBool === true && inputVal != "teacher" && inputVal != "student") {
             ulCount = ulCount + 1;
-            console.log("yes")
+            //console.log("yes")
             document.body.removeChild(arrowLabel);
             document.body.removeChild(inputElement);
-            previous =  "> is " + inputVal;
+            previous =  ">is " + inputVal;
             newList(previous);
             previous =  "The syntax of the command is incorrect.";
             newList(previous);
@@ -139,6 +135,21 @@ inputElement.addEventListener('keydown', function(event){
             inputElement.value = ""
             document.body.appendChild(inputElement);
             document.cookie = `text=${inputVal}; expires=Thu, 18 Dec 2800 12:00:00 UTC`;
+        }
+
+        if (!teacherBool && putBool === true)
+        {
+            ulCount = ulCount + 1;
+            //console.log("yes")
+            document.body.removeChild(arrowLabel);
+            document.body.removeChild(inputElement);
+            previous =  ">put " + inputVal;
+            newList(previous);
+            previous =  "The user is not authorized to perform this command.";
+            newList(previous);
+            document.body.appendChild(arrowLabel);
+            inputElement.value = ""
+            document.body.appendChild(inputElement);
         }
 
         if (displayBool) {
